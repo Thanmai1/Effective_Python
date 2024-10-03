@@ -1,4 +1,4 @@
-
+import sys
 import csv
 
 def inventory_cost(filename):
@@ -16,6 +16,11 @@ def inventory_cost(filename):
 
         return total
 
+print(f'{sys.argv=}')
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = "Data/inventory.csv"
 
 cost = inventory_cost(filename)
 print("Total Cost:", cost)
