@@ -28,6 +28,22 @@ def read_prices(filename):
 
     return prices
 
+inventory = read_inventory("Data/inventory.csv")
+prices = read_prices("Data/prices.csv")
+
+old_total_cost = 0
+for pr in inventory:
+    old_total_cost += pr["quant"]* pr["price"]
+print("total old cost", old_total_cost)
+
+new_total_cost = 0
+for pr in inventory:
+    new_total_cost += pr["quant"]* prices[ pr["name"] ]
+print("New old cost", new_total_cost)
+
+print("Total gain/loss:", new_total_cost-old_total_cost)
+
+
 
 
 
