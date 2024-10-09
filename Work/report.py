@@ -28,24 +28,18 @@ def read_prices(filename):
 
     return prices
 
-inventory = read_inventory("Data/inventory.csv")
-prices = read_prices("Data/prices.csv")
-
-old_total_cost = 0
-for pr in inventory:
-    old_total_cost += pr["quant"]* pr["price"]
-print("total old cost", old_total_cost)
-
-new_total_cost = 0
-for pr in inventory:
-    new_total_cost += pr["quant"]* prices[ pr["name"] ]
-print("New old cost", new_total_cost)
-
-print("Total gain/loss:", new_total_cost-old_total_cost)
 
 
+def make_report(inventory, prices):
+    ''' This function takes inv list and prices dict as inputs and returns list fo tuples'''
+    report = []
+    for prod in inventory:
+        name = prod["name"]
+        quant = prod["quant"]
+        old_price = prod["price"]
+        new_price = prices[name]
+        change = new_price - old_price
+        info = (name, quant, new_price, change)
+        report.append(info)
 
-
-
-
-
+    return report  # report is a list
