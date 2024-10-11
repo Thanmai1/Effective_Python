@@ -1,7 +1,7 @@
 import sys
 import csv
 
-def read_inventory(filename):
+def read_inventory(filename:str)-> list[dict]:
     inv = []
     with open(filename) as FH:
         data = csv.reader(FH) # data is a generator object
@@ -43,3 +43,16 @@ def make_report(inventory, prices):
         report.append(info)
 
     return report  # report is a list
+
+inv = read_inventory("Data/inventory.csv")
+prices = read_prices("Data/prices.csv")
+report = make_report(inv, prices)
+headers = ("Name", "Quantity", "Price", "Change")
+dash = ("-"*10,)*4
+
+print("%10s %10s %10s %10s" % headers)
+print("%10s %10s %10s %10s" % dash)
+for r in report:
+    print("%10s %10d %10.2f %10.2f" % r)
+
+
