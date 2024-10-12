@@ -8,9 +8,13 @@ def inventory_cost(filename):
 
         total = 0
         for rno, row in enumerate(data, start=1): # iterating from the second line
+            record = dict(zip(headers, row))
+            print(f"{record = }")
+            # print(type(record))
+            # break
             try:
-                quant = int(row[1])
-                price = float(row[2])
+                quant = int(record["quant"])
+                price = float(record["price"])
             except ValueError as e:
                 print(f"Row {rno}: Couldn't convert: {row}")
                 continue
