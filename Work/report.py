@@ -8,9 +8,10 @@ def read_inventory(filename:str)-> list[dict]:
         headers = next(data) # store the first line as headers
 
         for row in data:
-            items_in_row = {"name": str(row[0]),
-                            "quant": int(row[1]),
-                            "price": float(row[2]),
+            record = dict(zip(headers, row))
+            items_in_row = {"name": str(record["name"]),
+                            "quant": int(record["quant"]),
+                            "price": float(record["price"]),
                             }
             inv.append(items_in_row)
 
@@ -28,8 +29,6 @@ def read_prices(filename):
 
     return prices
 
-
-
 def make_report(inventory, prices):
     ''' This function takes inv list and prices dict as inputs and returns list fo tuples'''
     report = []
@@ -44,15 +43,18 @@ def make_report(inventory, prices):
 
     return report  # report is a list
 
-inv = read_inventory("Data/inventory.csv")
+def print_report(report):
+    headers = ("Name", "Quantity", "Price", "Change")
+    dash = ("-"*10,)*4
+
+    print("%10s %10s %10s %10s" % headers)
+    print("%10s %10s %10s %10s" % dash)
+    for r in report:
+        print("%10s %10d %10.2f %10.2f" % r)
+
+inv = read_inventory("Data/inventorydate.csv")
 prices = read_prices("Data/prices.csv")
 report = make_report(inv, prices)
-headers = ("Name", "Quantity", "Price", "Change")
-dash = ("-"*10,)*4
-
-print("%10s %10s %10s %10s" % headers)
-print("%10s %10s %10s %10s" % dash)
-for r in report:
-    print("%10s %10d %10.2f %10.2f" % r)
+print_report(report)
 
 
