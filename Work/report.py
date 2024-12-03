@@ -52,9 +52,12 @@ def print_report(report):
     for r in report:
         print("%10s %10d %10.2f %10.2f" % r)
 
-inv = read_inventory("Data/inventorydate.csv")
-prices = read_prices("Data/prices.csv")
-report = make_report(inv, prices)
-print_report(report)
+def inventory_report(inv_filename, prices_filename):
+    inv = read_inventory(inv_filename)
+    prices = read_prices(prices_filename)
+    report = make_report(inv, prices)
+    print_report(report)
+
+inventory_report("Data/inventory.csv", "Data/prices.csv")
 
 
