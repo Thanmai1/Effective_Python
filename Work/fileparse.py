@@ -4,6 +4,7 @@ import csv
 
 def parse_csv(filename:str,
               select:list=None,
+              types:list=None,
               ) -> list:
     ''' Parse a csv file into a list of records'''
     with open(filename) as FH:
@@ -24,6 +25,9 @@ def parse_csv(filename:str,
 
             if indices:
                 row = [row[idx] for idx in indices]
+
+            if types:
+                row = [ func(val) for func, val in zip(types, row)]
 
             record = dict(zip(headers, row))
             records.append(record)
