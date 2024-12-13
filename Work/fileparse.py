@@ -6,10 +6,11 @@ def parse_csv(filename:str,
               select:list=None,
               types:list=None,
               has_headers:bool=True,
+              delimiter:str=",",
               ) -> list:
     ''' Parse a csv file into a list of records'''
     with open(filename) as FH:
-        rows = csv.reader(FH)
+        rows = csv.reader(FH, delimiter = delimiter)
 
         if has_headers:
             #Read the file headers
