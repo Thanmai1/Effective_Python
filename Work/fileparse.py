@@ -7,6 +7,7 @@ def parse_csv(filename:str,
               types:list=None,
               has_headers:bool=True,
               delimiter:str=",",
+              silence_errors:bool=False,
               ) -> list:
 
     ''' Parse a csv file into a list of records'''
@@ -38,8 +39,9 @@ def parse_csv(filename:str,
                 try:
                     row = [ func(val) for func, val in zip(types, row)]
                 except ValueError as e:
-                    print(f"Row {rno}: Couldn't convert: {row}")
-                    print(f"Row {rno}: Reason {e}")
+                    if not silence_errors:
+                        print(f"Row {rno}: Couldn't convert: {row}")
+                        print(f"Row {rno}: Reason {e}")
                     continue
 
             if has_headers:
