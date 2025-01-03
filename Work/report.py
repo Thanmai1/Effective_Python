@@ -1,32 +1,19 @@
 import sys
 import csv
+from fileparse import parse_csv
 
 def read_inventory(filename:str)-> list[dict]:
-    inv = []
-    with open(filename) as FH:
-        data = csv.reader(FH) # data is a generator object
-        headers = next(data) # store the first line as headers
+    inv = parse_csv(filename,
+                    select = ["name", "quant", "price"],
+                    types = [str, int, float])
 
-        for row in data:
-            record = dict(zip(headers, row))
-            items_in_row = {"name": str(record["name"]),
-                            "quant": int(record["quant"]),
-                            "price": float(record["price"]),
-                            }
-            inv.append(items_in_row)
-
-        return inv
+    return inv
 
 def read_prices(filename):
-    prices = dict()
-    with open(filename) as FH:
-        data = csv.reader(FH)
-        for row in data:
-            try:
-                prices[row[0]] = float(row[1])
-            except IndexError as e:
-                continue
-
+    prices_list = parse_csv(filename,
+                            types = [str, float],
+                            has_headers= False)
+    prices = dict(prices_list)
     return prices
 
 def make_report(inventory, prices):
