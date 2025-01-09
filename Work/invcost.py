@@ -1,4 +1,4 @@
-import sys
+
 import csv
 from report import read_inventory
 
@@ -12,14 +12,19 @@ def inventory_cost(filename):
 
     return total
 
-print(f'{sys.argv=}')
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    filename = "Data/inventory.csv"
+def main(argv):
+    print(f'{argv=}')
+    if len(argv) == 2:
+        filename = argv[1]
+    else:
+        filename = "Data/inventory.csv"
 
-cost = inventory_cost(filename)
-print("Total Cost:", cost)
+    cost = inventory_cost(filename)
+    print("Total Cost:", cost)
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv)
 
 
 
