@@ -2,18 +2,23 @@ import sys
 import csv
 from fileparse import parse_csv
 
+#this function is used to read a csv file with headers
 def read_inventory(filename:str)-> list[dict]:
-    inv = parse_csv(filename,
-                    select = ["name", "quant", "price"],
-                    types = [str, int, float])
+    with open(filename) as FH:
+        inv = parse_csv(FH,
+                        select = ["name", "quant", "price"],
+                        types = [str, int, float])
 
     return inv
 
+#this function is used to read a csv file WITHOUT headers
 def read_prices(filename):
-    prices_list = parse_csv(filename,
-                            types = [str, float],
-                            has_headers= False)
-    prices = dict(prices_list)
+    with open(filename) as FH:
+        prices_list = parse_csv(FH,
+                                types = [str, float],
+                                has_headers= False)
+        prices = dict(prices_list)
+
     return prices
 
 def make_report(inventory, prices):
@@ -45,6 +50,20 @@ def inventory_report(inv_filename, prices_filename):
     report = make_report(inv, prices)
     print_report(report)
 
-inventory_report("Data/inventory.csv", "Data/prices.csv")
+
+def main(argv):
+    print(f"{argv= }")
+    if len(argv)!=3:
+        raise SystemExit(f"Usage: {argv[0]} invfile pricefile")
+
+    invfile = argv[1]
+    pricefile = argv[2]
+    inventory_report(invfile, pricefile)
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv)
+
+
 
 
