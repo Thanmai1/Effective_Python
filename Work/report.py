@@ -1,14 +1,17 @@
 import sys
 import csv
 from fileparse import parse_csv
+from product import Product
 
 #this function is used to read a csv file with headers
 def read_inventory(filename:str)-> list[dict]:
     with open(filename) as FH:
-        inv = parse_csv(FH,
+        inv_dicts = parse_csv(FH,
                         select = ["name", "quant", "price"],
                         types = [str, int, float])
 
+    inv = [ Product(pr["name"], pr["quant"], pr["price"])
+            for pr in inv_dicts]
     return inv
 
 #this function is used to read a csv file WITHOUT headers
@@ -25,9 +28,9 @@ def make_report(inventory, prices):
     ''' This function takes inv list and prices dict as inputs and returns list fo tuples'''
     report = []
     for prod in inventory:
-        name = prod["name"]
-        quant = prod["quant"]
-        old_price = prod["price"]
+        name = prod.name
+        quant = prod.quant
+        old_price = prod.price
         new_price = prices[name]
         change = new_price - old_price
         info = (name, quant, new_price, change)
