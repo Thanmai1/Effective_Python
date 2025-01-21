@@ -2,6 +2,7 @@ import sys
 import csv
 from fileparse import parse_csv
 from product import Product
+from tableformat import TableFormatter
 
 #this function is used to read a csv file with headers
 def read_inventory(filename:str)-> list[dict]:
@@ -38,20 +39,24 @@ def make_report(inventory, prices):
 
     return report  # report is a list
 
-def print_report(report):
+def print_report(reportdata, formatter):
     headers = ("Name", "Quantity", "Price", "Change")
-    dash = ("-"*10,)*4
+    #dash = ("-"*10,)*4
+    formatter.headings(headers)
 
-    print("%10s %10s %10s %10s" % headers)
-    print("%10s %10s %10s %10s" % dash)
-    for r in report:
-        print("%10s %10d %10.2f %10.2f" % r)
+    # print("%10s %10s %10s %10s" % headers)
+    # print("%10s %10s %10s %10s" % dash)
+    for name,quant,price,change in reportdata:
+        # print("%10s %10d %10.2f %10.2f" % r)
+        rowdata = [name, str(quant), f"{price:0.2f}", f"{change:0.2f}"]
+        formatter.row(rowdata)
 
 def inventory_report(inv_filename, prices_filename):
     inv = read_inventory(inv_filename)
     prices = read_prices(prices_filename)
     report = make_report(inv, prices)
-    print_report(report)
+    formatter = TableFormatter()
+    print_report(report, formatter)
 
 
 def main(argv):
