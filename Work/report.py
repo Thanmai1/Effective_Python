@@ -2,8 +2,7 @@ import sys
 import csv
 from fileparse import parse_csv
 from product import Product
-from tableformat import CSVTableFormatter
-from tableformat import TextTableFormatter
+from tableformat import create_formatter
 
 
 #this function is used to read a csv file with headers
@@ -57,24 +56,19 @@ def inventory_report(inv_filename, prices_filename, fmt = "txt"):
     inv = read_inventory(inv_filename)
     prices = read_prices(prices_filename)
     report = make_report(inv, prices)
-    if fmt == "txt":
-        formatter = TextTableFormatter()
-    elif fmt == "csv":
-        formatter = CSVTableFormatter()
-    else:
-        raise RuntimeError(f"Unknown Format {fmt}")
-
+    formatter = create_formatter(fmt)
     print_report(report, formatter)
 
 
 def main(argv):
     print(f"{argv= }")
-    if len(argv)!=3:
-        raise SystemExit(f"Usage: {argv[0]} invfile pricefile")
+    if len(argv)!=4:
+        raise SystemExit(f"Usage: {argv[0]} invfile pricefile fmt")
 
     invfile = argv[1]
     pricefile = argv[2]
-    inventory_report(invfile, pricefile)
+    fmt = argv[3]
+    inventory_report(invfile, pricefile, fmt)
 
 if __name__ == "__main__":
     import sys

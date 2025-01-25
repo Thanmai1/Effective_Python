@@ -1,4 +1,15 @@
 
+def create_formatter(name):
+    if name == "txt":
+        formatter = TextTableFormatter()
+    elif name == "csv":
+        formatter = CSVTableFormatter()
+    else:
+        raise RuntimeError(f"Unknown Format {name}")
+
+    return formatter
+
+
 class TableFormatter:
     def headings(self, headers):
         """
