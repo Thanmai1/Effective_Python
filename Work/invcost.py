@@ -3,14 +3,14 @@ import csv
 from report import read_inventory
 
 def inventory_cost(filename):
-    total = 0
+    # total = 0
     inv = read_inventory(filename)
-    for pr in inv:
-        costfor1item = pr.cost
-        # print(costfor1item)
-        total = total + costfor1item
+    # for pr in inv:
+    #     costfor1item = pr.cost
+    #     # print(costfor1item)
+    #     total = total + costfor1item
 
-    return total
+    return inv.total_cost
 
 def main(argv):
     print(f'{argv=}')
