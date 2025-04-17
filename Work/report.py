@@ -3,6 +3,7 @@ import csv
 from fileparse import parse_csv
 from product import Product
 from tableformat import create_formatter
+from inventory import Inventory
 
 
 #this function is used to read a csv file with headers
@@ -14,7 +15,7 @@ def read_inventory(filename:str)-> list[dict]:
 
     inv = [ Product(pr["name"], pr["quant"], pr["price"])
             for pr in inv_dicts]
-    return inv
+    return Inventory(inv)
 
 #this function is used to read a csv file WITHOUT headers
 def read_prices(filename):
