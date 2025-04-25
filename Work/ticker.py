@@ -1,13 +1,59 @@
 
 from follow import follow
 import csv
+def filter_names(rows, names):
+    for row in rows:
+        if row["Name"] in names:
+            yield row
+
+def make_dicts(rows, headers):
+    for row in rows:
+        yield dict(zip(headers, row))
+
+def convert_types(rows, types):
+    for row in rows:
+        yield [ func(val)  for func, val in zip(types, row)]
+
+def select_cols(rows, indices):
+    for row in rows:
+        yield [row[index] for index in indices]
 
 def parse_product_data(lines):
     rows = csv.reader(lines)
+    rows = select_cols(rows, [0, 1, 4])
+    rows = convert_types(rows, [ str, float, float])
+    rows = make_dicts(rows, ["Name", "Price", "Change"])
     return rows
 
-if __name__ == "__main__":
+def make_report(row):
+    ''' This function takes inv list and prices dict as inputs and returns list fo tuples'''
+    report = []
+    for prod in row:
+        info = prod.values()
+        yield info
+
+def print_report(reportdata, formatter):
+    headers = ("Name", "Price", "Change")
+    formatter.headings(headers)
+
+    for name,  price, change in reportdata:
+        rowdata = [name,  f"{price:0.2f}", f"{change:0.2f}"]
+        formatter.row(rowdata)
+
+
+def ticker(inv_file, log_file, fmt):
+    from tableformat import create_formatter
+    from report import read_inventory
+    inv = read_inventory("Data/inventory.csv")
     lines = follow("Data/marketlog.csv")
     rows = parse_product_data(lines)
-    for row in rows:
-        print(row)
+    rows = filter_names(rows, inv)
+
+    report = make_report(rows)
+    formatter = create_formatter(fmt)
+    print_report(report, formatter)
+
+if __name__ == "__main__":
+
+    inv = ticker("Data/inventory.csv", "Data/marketlog.csv", "txt")
+

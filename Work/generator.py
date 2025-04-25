@@ -5,10 +5,16 @@ def filematch(lines, substr):
             yield line
 
 from follow import follow
+import csv
+
 lines = follow("Data/marketlog.csv")
-mint = filematch(lines, "MINT")
-for line in mint:
-    print(line)
+rows = csv.reader(lines)
+for row in rows:
+    print(row)
+
+# mint = filematch(lines, "MINT")
+# for line in mint:
+#     print(line)
 
 """>>> for line in filematch("Data/inventory.csv", "MINT"):
 ...     print(line, end = ' ')
