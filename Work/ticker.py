@@ -20,14 +20,16 @@ def select_cols(rows, indices):
 
 def parse_product_data(lines):
     rows = csv.reader(lines)
-    rows = select_cols(rows, [0, 1, 4])
+    # rows = select_cols(rows, [0, 1, 4])
+    rows = ( [row[index] for index in [0,1,4]] for row in rows)
     rows = convert_types(rows, [ str, float, float])
-    rows = make_dicts(rows, ["Name", "Price", "Change"])
+    # rows = make_dicts(rows, ["Name", "Price", "Change"])
+    headers = ["Name", "Price", "Change"]
+    rows = (dict(zip(headers, row)) for row in rows )
     return rows
 
 def make_report(row):
     ''' This function takes inv list and prices dict as inputs and returns list fo tuples'''
-    report = []
     for prod in row:
         info = prod.values()
         yield info
@@ -47,7 +49,8 @@ def ticker(inv_file, log_file, fmt):
     inv = read_inventory("Data/inventory.csv")
     lines = follow("Data/marketlog.csv")
     rows = parse_product_data(lines)
-    rows = filter_names(rows, inv)
+    # rows = filter_names(rows, inv)
+    rows = (row for row in rows if row["Name"] in inv)
 
     report = make_report(rows)
     formatter = create_formatter(fmt)
