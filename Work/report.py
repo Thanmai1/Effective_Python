@@ -7,14 +7,15 @@ from inventory import Inventory
 
 
 #this function is used to read a csv file with headers
-def read_inventory(filename:str)-> list[dict]:
+def read_inventory(filename:str, **opts)-> list[dict]:
+    print(opts)
     with open(filename) as FH:
         inv_dicts = parse_csv(FH,
                         select = ["name", "quant", "price"],
-                        types = [str, int, float])
+                        types = [str, int, float],
+                        **opts)
 
-    inv = [ Product(pr["name"], pr["quant"], pr["price"])
-            for pr in inv_dicts]
+    inv = [Product(**pr) for pr in inv_dicts]
     return Inventory(inv)
 
 #this function is used to read a csv file WITHOUT headers
