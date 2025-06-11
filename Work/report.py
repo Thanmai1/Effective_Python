@@ -15,8 +15,12 @@ def read_inventory(filename:str, **opts)-> list[dict]:
                         types = [str, int, float],
                         **opts)
 
-    inv = [Product(**pr) for pr in inv_dicts]
-    return Inventory(inv)
+    inv_p = [Product(**pr) for pr in inv_dicts]
+    inv = Inventory()
+    for pr in inv_p:
+        inv.append(pr)
+
+    return inv
 
 #this function is used to read a csv file WITHOUT headers
 def read_prices(filename):
