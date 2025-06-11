@@ -1,7 +1,6 @@
 import sys
 import csv
 from fileparse import parse_csv
-from product import Product
 from tableformat import create_formatter
 from inventory import Inventory
 
@@ -10,15 +9,7 @@ from inventory import Inventory
 def read_inventory(filename:str, **opts)-> list[dict]:
     print(opts)
     with open(filename) as FH:
-        inv_dicts = parse_csv(FH,
-                        select = ["name", "quant", "price"],
-                        types = [str, int, float],
-                        **opts)
-
-    inv_p = [Product(**pr) for pr in inv_dicts]
-    inv = Inventory()
-    for pr in inv_p:
-        inv.append(pr)
+        inv = Inventory.from_csv(FH)
 
     return inv
 
