@@ -1,5 +1,10 @@
+from typedproperty import typedproperty
+
 class Product:
-    __slots__ = ('name', '_quant', 'price')
+    # __slots__ = ('name', '_quant', 'price')
+    name = typedproperty("name", str)
+    quant = typedproperty("quant", int)
+    price = typedproperty("price", float)
 
     def __init__(self, name, quant, price):
         self.name = name
@@ -10,15 +15,8 @@ class Product:
         return f'Product({self.name}, {self.quant}, {self.price})'
 
 
-    @property
-    def quant(self):
-        return self._quant
 
-    @quant.setter
-    def quant(self, value):
-        if not isinstance(value, int):
-            raise TypeError("Expected an int")
-        self._quant = value
+
 
     @property
     def cost(self):
