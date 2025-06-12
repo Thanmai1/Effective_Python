@@ -13,3 +13,6 @@ def typedproperty(prop_name, expected_type):
 
     return prop
 
+String = lambda attrname : typedproperty(attrname, str)
+Integer = lambda attrname : typedproperty(attrname, int)
+Float = lambda attrname : typedproperty(attrname, float)

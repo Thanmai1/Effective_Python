@@ -1,10 +1,11 @@
 from typedproperty import typedproperty
+from typedproperty import String, Integer, Float
 
 class Product:
     # __slots__ = ('name', '_quant', 'price')
-    name = typedproperty("name", str)
-    quant = typedproperty("quant", int)
-    price = typedproperty("price", float)
+    name = String("name")
+    quant = Integer("quant")
+    price = Float("price")
 
     def __init__(self, name, quant, price):
         self.name = name
@@ -13,10 +14,6 @@ class Product:
 
     def __repr__(self):
         return f'Product({self.name}, {self.quant}, {self.price})'
-
-
-
-
 
     @property
     def cost(self):
